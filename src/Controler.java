@@ -1,10 +1,22 @@
 import java.util.List;
+
+/**
+ * Main calculation module. It contains all necessary algorithms.
+ * @author asmolen
+ *
+ */
+
 public class Controler {
 
 	public Controler() {
 		
 	}
-	
+	/**
+	 * Solves Steiner tree problem
+	 * @param graph input graph
+	 * @param terminals set of terminals
+	 * @return Steiner tree
+	 */
 	public Graph getSteinerTree(Graph graph, List<Integer> terminals) {
 		// TODO
 		
