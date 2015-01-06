@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.io.File;
@@ -5,6 +6,7 @@ import java.io.FileNotFoundException;
 
 public class GraphParser {
 	
+	private List<Integer> terminals = new ArrayList<Integer>();
 	public GraphParser() {
 		
 	}
@@ -27,15 +29,19 @@ public class GraphParser {
 				line = line.substring(0, pos_comment).trim();
 			}
 		
-			graph = new Graph(Integer.parseUnsignedInt(line));
+			graph = new Graph(Integer.parseInt(line));
 			
 			line = "";
-			// omitted list of terminals
+			// add list of terminals
 			while (input.hasNextLine() && line.isEmpty())
 			{
 				line = input.nextLine();
 				pos_comment = line.indexOf(COMMENT_CHAR);
 				line = line.substring(0, pos_comment).trim();
+				String[] tab = line.split(",");
+				for (int i = 0; i < tab.length; i++) {
+					terminals.add(Integer.parseInt(tab[i]));
+				}
 			}
 		
 			// getting list of edges
@@ -77,9 +83,7 @@ public class GraphParser {
 	}
 	
 	public List<Integer> getTerminals(String file) {
-		// TODO
-		
-		return null;
+		return terminals;
 	}
 
 }
