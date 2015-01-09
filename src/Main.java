@@ -20,6 +20,9 @@ public class Main {
 		inputGraph = parser.getGraphFromFile(inputFileName);
 		List<Integer> terminals = parser.getTerminals(inputFileName);
 		
+	
+
+		
 		controler = new Controler();
 		outputGraph = controler.getSteinerTree(inputGraph, terminals);
 		
@@ -28,7 +31,7 @@ public class Main {
 		
 		input.close();
 		
-		parser.saveGraphToFile(outputGraph, outputFileName);
+		parser.saveGraphToFile(outputGraph, outputFileName, terminals);
 	}
 
 }

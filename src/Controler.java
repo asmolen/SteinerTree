@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
@@ -11,7 +12,8 @@ import java.util.Comparator;
  */
 
 public class Controler {
-
+	private List<Integer> terminals = new ArrayList<Integer>();;
+	
 	public Controler() {
 		
 	}
@@ -22,8 +24,7 @@ public class Controler {
 	 * @return Steiner tree
 	 */
 	public Graph getSteinerTree(Graph graph, List<Integer> terminals) {
-		// TODO
-		
+		this.terminals = terminals;
 		if (graph.getNodesNumber() == terminals.size())
 		{
 			return getMST(graph);
@@ -46,31 +47,35 @@ public class Controler {
 		Edge e;
 		
 		visited = new boolean[graph.getNodesNumber()];
+		System.out.println("getnode ty" + graph.getNodesNumber());
 		for (boolean i : visited)
 		{
 			i = false;
 		}
 		
-		v = 1;
-		visited[v-1] = true;
+		v = 0;
+		visited[v] = true;
 		
 		MST = new Graph(graph.getNodesNumber());
 		
 		comparator = new EdgeComparator();
 		queue = new PriorityQueue<Edge>(20, comparator);
 		
-		for (int i = 1; i < graph.getNodesNumber(); i++)
+		for (int i = 0; i < graph.getNodesNumber(); i++)
 		{
 			addEdgesToQueue(v, graph.getNeightbours(v), queue, visited);
-			
+		
 			do
 			{
 				e = queue.poll();
-			} while (visited[e.v2-1]);
-			
+			} while (visited[e.v2]);
+			System.out.println("e.v1 " + e.v1+" e.v2 "+ e.v2 + " e.weight "+e.weight);
 			MST.addEdge(e.v1, e.v2, e.weight);
-			visited[e.v2-1] = true;
+			visited[e.v2] = true;
 			v = e.v2;
+			if(	MST.getVerticesNumber() == terminals.size() - 1)
+				return MST;
+		
 		}
 		
 		return MST;
@@ -80,7 +85,7 @@ public class Controler {
 	{
 		for (Map.Entry<Integer, Integer> n : listNodes)
 		{
-			if (!visited[n.getKey()-1])
+			if (!visited[n.getKey()])
 			{
 				queue.offer(new Edge(v, n.getKey(), n.getValue()));
 			}
@@ -88,14 +93,57 @@ public class Controler {
 	}
 	
 	private Graph getMetricClosure(Graph graph) {
-		// TODO
-		
-		return null;
+		Graph full = new Graph(graph.getNodesNumber());
+		for (int i = 0; i < getTerminals().size(); i++) {
+			int source = getTerminals().get(i);
+			Dijkstra shortestPath = new Dijkstra(graph,
+					source);
+			// Wyswietla najkrotsze sciezki
+			// i jeœli sa terminalami to dodaje do grafu
+			for (int target = 0; target < graph.getNodesNumber(); target++) {
+				if (getTerminals().contains(target) && target != source && shortestPath.hasPathTo(target)) {
+					System.out.printf("get full %d do %d (%d)  ", source, target,
+							shortestPath.getDistanceTo(target));
+					full.addEdge(source, target, (int) shortestPath.getDistanceTo(target));
+					if (shortestPath.hasPathTo(target)) {
+						for (Edge edge : shortestPath.getPathTo(target)) {
+							System.out.print(edge);
+						}
+						System.out.println();
+					}
+				}
+			}
+		}
+		return full;
 	}
 	
 	private Graph createSteinerTree(Graph graph, Graph tree) {
-		// TODO
-		
-		return null;
+		Graph steiner = new Graph(graph.getNodesNumber());
+		for (int i = 0; i < getTerminals().size(); i++) {
+			int source = getTerminals().get(i);
+			Dijkstra shortestPath = new Dijkstra(graph,
+					source);
+			// Wyswietla najkrotsze sciezki
+			// i jeœli sa w drzewie mst to dodaje do grafu
+			for (int target = source; target < graph.getNodesNumber(); target++) {
+				if (tree.getNodes().contains(target) && tree.getNodes().contains(source) && source != target && shortestPath.hasPathTo(target)) {
+					System.out.printf("get steiner %d do %d (%d)  ", source, target,
+							shortestPath.getDistanceTo(target));
+					
+					if (shortestPath.hasPathTo(target)) {
+						for (Edge edge : shortestPath.getPathTo(target)) {
+							System.out.print(edge);
+							steiner.addEdgeTree(edge.getV1(), edge.getV2(), edge.getWeight());
+						}
+						System.out.println();
+					}
+				}
+			}
+		}
+		System.out.println("waga "+ steiner.getWeight());
+		return steiner;
+	}
+	public List<Integer> getTerminals() {
+		return terminals;
 	}
 }

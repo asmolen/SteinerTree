@@ -3,6 +3,8 @@ import java.util.List;
 import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 
 public class GraphParser {
 	
@@ -40,7 +42,7 @@ public class GraphParser {
 				line = line.substring(0, pos_comment).trim();
 				String[] tab = line.split(",");
 				for (int i = 0; i < tab.length; i++) {
-					terminals.add(Integer.parseInt(tab[i]));
+					terminals.add(Integer.parseInt(tab[i]) - 1);
 				}
 			}
 		
@@ -65,7 +67,7 @@ public class GraphParser {
 			
 				String[] tab = line.split(" ");
 			
-				graph.addEdge(Integer.parseInt(tab[0]), Integer.parseInt(tab[1]), Integer.parseInt(tab[2]));
+				graph.addEdge(Integer.parseInt(tab[0]) - 1, Integer.parseInt(tab[1]) - 1, Integer.parseInt(tab[2]));
 			
 			}
 			input.close();
@@ -78,8 +80,26 @@ public class GraphParser {
 		}
 	}
 	
-	public void saveGraphToFile(Graph graph, String file) {
-		// TODO
+	public void saveGraphToFile(Graph graph, String file, List<Integer> terminals) {
+		PrintWriter writer;
+		try {
+			writer = new PrintWriter(file, "UTF-8");
+		
+		writer.println(graph.getWeight()+" #waga drzewa");
+		writer.println(graph.getNodes().size()+" #liczba wierzcholkow");
+		for (int i = 0; i < terminals.size(); i++) 
+			writer.print(terminals.get(i)+1 + ", ");
+		writer.println(" #terminale");
+		for (int i = 0; i < graph.getNodesNumber(); i++) {
+			for (int j = 0; j < graph.getNeightbours(i).size(); j++){
+				writer.println(i+1 + " " + (graph.getNeightbours(i).get(j).getKey()+1) + " " + graph.getNeightbours(i).get(j).getValue());
+			}
+		}
+		writer.close();
+		} catch (FileNotFoundException | UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public List<Integer> getTerminals(String file) {
