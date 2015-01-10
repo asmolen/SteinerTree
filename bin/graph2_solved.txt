@@ -1,0 +1,9 @@
+17 #waga drzewa
+9 #liczba wierzcholkow
+1, 2, 3, 4, 5,  #terminale
+1 6 2
+2 6 2
+2 5 5
+3 7 4
+4 7 3
+6 7 1

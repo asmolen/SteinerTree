@@ -1,5 +1,6 @@
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
@@ -115,7 +116,9 @@ public class Dijkstra {
 
 	private void relax(Graph graph, int v) {
 		// przegladamy listy sasiedztwa wszystkich wierzcholkow
-		for (Edge edge : graph.getNeighborhoodList(v)) {
+		
+		for (Map.Entry<Integer, Integer> neighbour : graph.getNeightbours(v)) {
+			Edge edge = new Edge(v, neighbour.getKey(), neighbour.getValue());
 			int w = edge.getV2();
 
 			// sprawdzamy czy zmiana wierzcholka skroci dystans z wierzcholka

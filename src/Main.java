@@ -7,7 +7,8 @@ public class Main {
 		// TODO Auto-generated method stub
 		
 		Scanner input;
-		Graph inputGraph, outputGraph;
+		Graph inputGraph;
+		Tree steinerTree;
 		Controler controler;
 		GraphParser parser;
 		String inputFileName, outputFileName;
@@ -19,19 +20,16 @@ public class Main {
 		parser = new GraphParser();
 		inputGraph = parser.getGraphFromFile(inputFileName);
 		List<Integer> terminals = parser.getTerminals(inputFileName);
-		
-	
-
-		
+				
 		controler = new Controler();
-		outputGraph = controler.getSteinerTree(inputGraph, terminals);
+		steinerTree = controler.getSteinerTree(inputGraph, terminals);
 		
 		System.out.println("Podaj nazwê pliku wyjœciowego\n");
 		outputFileName = input.next();
 		
 		input.close();
 		
-		parser.saveGraphToFile(outputGraph, outputFileName, terminals);
+		parser.saveTreeToFile(steinerTree, outputFileName, terminals);
 	}
 
 }

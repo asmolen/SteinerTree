@@ -26,9 +26,12 @@ public class GraphParser {
 			// getting number of nodes
 			while (input.hasNextLine() && line.isEmpty())
 			{
-				line = input.nextLine();
+				line = input.nextLine().trim();
 				pos_comment = line.indexOf(COMMENT_CHAR);
-				line = line.substring(0, pos_comment).trim();
+				if (pos_comment != -1)
+				{
+					line = line.substring(0, pos_comment).trim();
+				}
 			}
 		
 			graph = new Graph(Integer.parseInt(line));
@@ -37,12 +40,15 @@ public class GraphParser {
 			// add list of terminals
 			while (input.hasNextLine() && line.isEmpty())
 			{
-				line = input.nextLine();
+				line = input.nextLine().trim();
 				pos_comment = line.indexOf(COMMENT_CHAR);
-				line = line.substring(0, pos_comment).trim();
+				if (pos_comment != -1)
+				{
+					line = line.substring(0, pos_comment).trim();
+				}
 				String[] tab = line.split(",");
 				for (int i = 0; i < tab.length; i++) {
-					terminals.add(Integer.parseInt(tab[i]) - 1);
+					terminals.add(Integer.parseInt(tab[i].trim()) - 1);
 				}
 			}
 		
@@ -52,7 +58,7 @@ public class GraphParser {
 				line = "";
 				while (input.hasNextLine() && line.isEmpty())
 				{
-					line = input.nextLine();
+					line = input.nextLine().trim();
 					pos_comment = line.indexOf(COMMENT_CHAR);
 					if (pos_comment != -1)
 					{
@@ -67,7 +73,7 @@ public class GraphParser {
 			
 				String[] tab = line.split(" ");
 			
-				graph.addEdge(Integer.parseInt(tab[0]) - 1, Integer.parseInt(tab[1]) - 1, Integer.parseInt(tab[2]));
+				graph.addEdge(Integer.parseInt(tab[0].trim()) - 1, Integer.parseInt(tab[1].trim()) - 1, Integer.parseInt(tab[2].trim()));
 			
 			}
 			input.close();
@@ -75,24 +81,27 @@ public class GraphParser {
 			return graph;
 		}
 		catch (FileNotFoundException e) {
-			e.getMessage();
+			//e.getMessage();
+			System.out.println("Plik nie istnieje");
 			return null;
 		}
 	}
 	
-	public void saveGraphToFile(Graph graph, String file, List<Integer> terminals) {
+	public void saveTreeToFile(Tree tree, String file, List<Integer> terminals) {
 		PrintWriter writer;
 		try {
 			writer = new PrintWriter(file, "UTF-8");
 		
-		writer.println(graph.getWeight()+" #waga drzewa");
-		writer.println(graph.getNodes().size()+" #liczba wierzcholkow");
+		writer.println(tree.getWeight()+" #waga drzewa");
+		writer.println(tree.getNodesNumber() + " #liczba wierzcholkow");
 		for (int i = 0; i < terminals.size(); i++) 
 			writer.print(terminals.get(i)+1 + ", ");
 		writer.println(" #terminale");
-		for (int i = 0; i < graph.getNodesNumber(); i++) {
-			for (int j = 0; j < graph.getNeightbours(i).size(); j++){
-				writer.println(i+1 + " " + (graph.getNeightbours(i).get(j).getKey()+1) + " " + graph.getNeightbours(i).get(j).getValue());
+		for (int i = 0; i < tree.getNodesNumber(); i++) {
+			for (int j = 0; j < tree.getNeightbours(i).size(); j++){
+				if (i < tree.getNeightbours(i).get(j).getKey()) {
+					writer.println(i+1 + " " + (tree.getNeightbours(i).get(j).getKey()+1) + " " + tree.getNeightbours(i).get(j).getValue());
+				}
 			}
 		}
 		writer.close();
