@@ -72,8 +72,18 @@ public class GraphParser {
 				}
 			
 				String[] tab = line.split(" ");
+				
+				if (tab.length != 3) {
+					System.out.println("Parse error: " + "Nieprawid³owa liczba elementów w linii, " + tab.length);
+					input.close();
+					return null;
+				}
 			
-				graph.addEdge(Integer.parseInt(tab[0].trim()) - 1, Integer.parseInt(tab[1].trim()) - 1, Integer.parseInt(tab[2].trim()));
+				if (!graph.addEdge(Integer.parseInt(tab[0].trim()) - 1, Integer.parseInt(tab[1].trim()) - 1, Integer.parseInt(tab[2].trim()))) {
+					System.out.println("Nieprawid³owe dane wejœciowe");
+					input.close();
+					return null;
+				}
 			
 			}
 			input.close();
@@ -82,7 +92,11 @@ public class GraphParser {
 		}
 		catch (FileNotFoundException e) {
 			//e.getMessage();
-			System.out.println("Plik nie istnieje");
+			System.out.println(e.getMessage());
+			return null;
+		}
+		catch (NumberFormatException e) {
+			System.out.println("Parse error: " + e.getMessage());
 			return null;
 		}
 	}

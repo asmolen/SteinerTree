@@ -19,17 +19,26 @@ public class Main {
 		
 		parser = new GraphParser();
 		inputGraph = parser.getGraphFromFile(inputFileName);
+		
+		if (inputGraph == null) {
+			input.close();
+			return;
+		}
 		List<Integer> terminals = parser.getTerminals(inputFileName);
 				
 		controler = new Controler();
 		steinerTree = controler.getSteinerTree(inputGraph, terminals);
 		
+		if (steinerTree == null) {
+			input.close();
+			return;
+		}
+		
 		System.out.println("Podaj nazwê pliku wyjœciowego\n");
-		outputFileName = input.next();
+		outputFileName = input.next();		
+		parser.saveTreeToFile(steinerTree, outputFileName, terminals);
 		
 		input.close();
-		
-		parser.saveTreeToFile(steinerTree, outputFileName, terminals);
 	}
 
 }

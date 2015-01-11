@@ -25,7 +25,10 @@ public class Controler {
 	 */
 	public Tree getSteinerTree(Graph graph, List<Integer> terminals) {
 		
-		
+		if (!isConnected(graph)) {
+			System.out.println("Graf nie jest spójny!");
+			return null;
+		}
 		
 		this.terminals = terminals;
 		if (graph.getNodesNumber() == terminals.size())
@@ -40,10 +43,23 @@ public class Controler {
 		return createSteinerTree(graph, MST);
 	}
 	
-//	private void DST(Graph graph) {
-//		boolean[] visited;
-//		
-//	};
+	private boolean isConnected(Graph graph) {
+		boolean [] visited = new boolean [graph.getNodesNumber()];
+		DFS(0, graph, visited);
+		for (boolean i : visited) {
+			if (!i)
+				return false;
+		}
+		return true;
+	}
+	
+	private void DFS(int v, Graph graph, boolean[] visited) {
+		visited[v] = true;
+		for (Map.Entry<Integer, Integer> neighbour : graph.getNeightbours(v)) {
+			if (!visited[neighbour.getKey()])
+				DFS(neighbour.getKey(), graph, visited);
+		}
+	}
 	
 	private Tree getMST(Graph graph) {		
 		Comparator<Edge> comparator;

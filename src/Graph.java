@@ -26,6 +26,10 @@ public class Graph {
 	}
 	
 	public boolean addEdge(Integer firstNode, Integer secondNode, Integer weight) {
+		if (firstNode < 0 || secondNode < 0 || weight < 0 || firstNode >= _nodesNumber || secondNode >= _nodesNumber) {
+			return false;
+		}
+		
 		if (adjList.get(firstNode).contains(new AbstractMap.SimpleEntry<>(secondNode, weight)))
 			return false;		
 		adjList.get(firstNode).add(new AbstractMap.SimpleEntry<>(secondNode, weight));
