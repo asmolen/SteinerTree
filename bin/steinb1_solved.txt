@@ -1,5 +1,5 @@
 82 #waga drzewa
-50 #liczba wierzcholkow
+20 #liczba wierzcholkow
 48, 49, 22, 35, 27, 12, 37, 34, 24,  #terminale
 7 20 3
 7 29 7

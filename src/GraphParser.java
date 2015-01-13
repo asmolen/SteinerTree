@@ -111,7 +111,7 @@ public class GraphParser {
 		for (int i = 0; i < terminals.size(); i++) 
 			writer.print(terminals.get(i)+1 + ", ");
 		writer.println(" #terminale");
-		for (int i = 0; i < tree.getNodesNumber(); i++) {
+		for (int i = 0; i < tree.getMaxNodeId(); i++) {
 			for (int j = 0; j < tree.getNeightbours(i).size(); j++){
 				if (i < tree.getNeightbours(i).get(j).getKey()) {
 					writer.println(i+1 + " " + (tree.getNeightbours(i).get(j).getKey()+1) + " " + tree.getNeightbours(i).get(j).getValue());

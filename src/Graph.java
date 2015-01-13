@@ -8,9 +8,11 @@ public class Graph {
 
 	private List<List<Map.Entry<Integer, Integer>>> adjList;
 	private int _nodesNumber;
+	private int maxNodeId;
 		
 	public Graph(int nodesNumber) {
 		_nodesNumber = nodesNumber;
+		maxNodeId = nodesNumber;
 		adjList = new ArrayList<List<Map.Entry<Integer, Integer>>>(nodesNumber);
 		int nodeNr;
 		for (nodeNr = 0; nodeNr < nodesNumber; nodeNr++)
@@ -23,6 +25,15 @@ public class Graph {
 	
 	public int getNodesNumber() {
 		return _nodesNumber;
+	}
+	
+	public void setNodesNumber(int nodesNumber) {
+		_nodesNumber = nodesNumber;
+	}
+	
+	
+	public int getMaxNodeId() {
+		return maxNodeId;
 	}
 	
 	public boolean addEdge(Integer firstNode, Integer secondNode, Integer weight) {

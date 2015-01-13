@@ -135,7 +135,10 @@ public class Controler {
 	}
 	
 	private Tree createSteinerTree(Graph graph, Tree tree) {
-		Tree steiner = new Tree(graph.getNodesNumber());		
+		Tree steiner = new Tree(graph.getNodesNumber());	
+		boolean visited[] = new boolean[graph.getNodesNumber()];
+		int nodesNumber = 0;
+		
 		for (Edge e : tree.getEdges()) {
 			int source = e.v1;
 			int target = e.v2;
@@ -148,10 +151,18 @@ public class Controler {
 				for (Edge edge : shortestPath.getPathTo(target)) {
 					System.out.print(edge);
 					steiner.addEdge(edge.getV1(), edge.getV2(), edge.getWeight());
+					visited[edge.getV1()] = true;
+					visited[edge.getV2()] = true;
 				}
 				System.out.println();
 			}
 		}
+		
+		for (boolean i: visited) {
+			if (i) nodesNumber++;
+		}
+		
+		steiner.setNodesNumber(nodesNumber);
 		System.out.println("waga "+ steiner.getWeight());
 		return steiner;
 	}
