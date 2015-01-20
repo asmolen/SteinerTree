@@ -1,5 +1,0 @@
-8 #waga drzewa
-3 #liczba wierzcholkow
-1, 2, 4,  #terminale
-1 4 3
-1 2 5

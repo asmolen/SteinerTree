@@ -88,6 +88,11 @@ public class Dijkstra {
 	// najdluzszej
 	private Queue<DistanceToEdge> priorityQueue;
 
+	/**
+	 * Realizuje algorytm Dijkstry dla danego wierzchołka startowego.
+	 * @param graph graf wejściowy
+	 * @param source wierzchołek startowy
+	 */
 	public Dijkstra(Graph graph, int source) {
 		// inicjacja wewnetrznych struktur
 		edgeTo = new Edge[graph.getNodesNumber()];
@@ -140,25 +145,25 @@ public class Dijkstra {
 
 	// jesli zwrocona wartosc wynosi Long.MAX_VALUE to oznacza, ze dany
 	// wierzcholek jest nieosiagalny ze zrodla
+	/**
+	 * Pobiera długość scieżki z wierzchołka startowego do wybranego.
+	 * @param v wybrany wierzchołek
+	 * @return długość ścieżki
+	 */
 	public long getDistanceTo(int v) {
 		return distanceTo[v];
 	}
 
-	// jesli istnieje droga do danego wierzcholka jest mniejsza od
-	// Long.MAX_VALUE, ktore zostalo inicjalnie ustawione dla wszystkich
-	// wierzcholkow
-	public boolean hasPathTo(int v) {
-		return distanceTo[v] < Long.MAX_VALUE;
-	}
-
 	// jesli nie istnieje sciezka do danego wierzcholka zostanie zwrocona pusta
 	// kolekcja
+	/**
+	 * Pobiera najkrótszą ścieżkę z wierzchołka startowego do wybranego.
+	 * @param v wybrany wierzchołek
+	 * @return lista krawędzi tworząca najkrótszą ścieżkę
+	 */
 	public Iterable<Edge> getPathTo(int v) {
 		Deque<Edge> path = new ArrayDeque<Edge>();
-		// jesli nie istnieje sciezka zwroc pusta sciezke
-		if (!hasPathTo(v)) {
-			return path;
-		}
+		
 		// dopoki istnieje krawedz dodawaj ja do stosu
 		// krawedz zrodlowa jest oznaczona jako null
 		for (Edge e = edgeTo[v]; e != null; e = edgeTo[e.getV1()]) {

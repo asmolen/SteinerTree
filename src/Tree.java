@@ -1,6 +1,11 @@
 import java.util.List;
 import java.util.ArrayList;
 
+/**
+ * Klasa reprezentująca drzewo. Rozszerza graf o listę krawędzi i wagi całego drzewa.
+ * @author asmolen
+ *
+ */
 public class Tree extends Graph {
 
 	private List<Edge> edgesList;

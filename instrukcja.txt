@@ -1,0 +1,5 @@
+plik jar - bin\steinerTree.jar
+skrypt uruchamiaj¹cy program - bin\steinerTreeRun.bat
+kod Ÿród³owy - src
+dokumentacja javadoc - doc
+pliki z testowymi grafami oraz rozwi¹zania - bin\testy

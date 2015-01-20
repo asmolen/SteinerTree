@@ -1,6 +1,11 @@
 import java.util.Scanner;
 import java.util.List;
 
+/**
+ * GÅ‚Ã³wna klasa programu.
+ * @author asmolen
+ *
+ */
 public class Main {
 
 	public static void main(String[] args) {
@@ -13,7 +18,7 @@ public class Main {
 		GraphParser parser;
 		String inputFileName, outputFileName;
 		
-		System.out.println("Podaj nazwê pliku wejœciowego\n");
+		System.out.println("Podaj nazwï¿½ pliku wejï¿½ciowego\n");
 		input = new Scanner(System.in);
 		inputFileName = input.next();
 		
@@ -27,14 +32,23 @@ public class Main {
 		List<Integer> terminals = parser.getTerminals(inputFileName);
 				
 		controler = new Controler();
+		
+		
+		long start=System.currentTimeMillis();		   
+		   
 		steinerTree = controler.getSteinerTree(inputGraph, terminals);
+		   
+		long stop=System.currentTimeMillis();
+		
+		System.out.println("Czas wykonania (w milisekundach): "+(stop-start));
+		
 		
 		if (steinerTree == null) {
 			input.close();
 			return;
 		}
 		
-		System.out.println("Podaj nazwê pliku wyjœciowego\n");
+		System.out.println("Podaj nazwï¿½ pliku wyjï¿½ciowego\n");
 		outputFileName = input.next();		
 		parser.saveTreeToFile(steinerTree, outputFileName, terminals);
 		

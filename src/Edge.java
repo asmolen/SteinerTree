@@ -1,9 +1,14 @@
 
+/**
+ * Reprezentuje krawędź.
+ * @author asmolen
+ *
+ */
 public class Edge {
 	
-	int v1;
-	int v2;
-	int weight;
+	private int v1;
+	private int v2;
+	private int weight;
 	
 	
 	public Edge(int _v1, int _v2, int _weight)

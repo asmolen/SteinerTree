@@ -6,27 +6,27 @@ import java.util.PriorityQueue;
 import java.util.Comparator;
 
 /**
- * Main calculation module. It contains all necessary algorithms.
+ * Główny moduł obliczeniowy, zawiera implementację algorytmów.
  * @author asmolen
  *
  */
 
 public class Controler {
-	private List<Integer> terminals = new ArrayList<Integer>();;
+	private List<Integer> terminals = new ArrayList<Integer>();
 	
 	public Controler() {
 		
 	}
 	/**
-	 * Solves Steiner tree problem
-	 * @param graph input graph
-	 * @param terminals set of terminals
-	 * @return Steiner tree
+	 * Wyznacza drzewo Steinera.
+	 * @param graph graf wejściowy
+	 * @param terminals lista terminali
+	 * @return drzewo Steinera
 	 */
 	public Tree getSteinerTree(Graph graph, List<Integer> terminals) {
 		
 		if (!isConnected(graph)) {
-			System.out.println("Graf nie jest sp�jny!");
+			System.out.println("Graf nie jest spójny!");
 			return null;
 		}
 		
@@ -72,7 +72,7 @@ public class Controler {
 		visited = new boolean[graph.getNodesNumber()];
 		System.out.println("getnode ty" + graph.getNodesNumber());
 		
-		v = getTerminals().get(0);
+		v = terminals.get(0);
 		visited[v] = true;
 		
 		MST = new Tree(graph.getNodesNumber());
@@ -85,12 +85,12 @@ public class Controler {
 		
 			do {
 				e = queue.poll();
-			} while (visited[e.v2]);
+			} while (visited[e.getV2()]);
 			
-			System.out.println("e.v1 " + e.v1+" e.v2 "+ e.v2 + " e.weight "+e.weight);
-			MST.addEdge(e.v1, e.v2, e.weight);
-			visited[e.v2] = true;
-			v = e.v2;
+			System.out.println("v1 " + e.getV1()+" v2 "+ e.getV2() + " e.weight "+e.getWeight());
+			MST.addEdge(e.getV1(), e.getV2(), e.getWeight());
+			visited[e.getV2()] = true;
+			v = e.getV2();
 			if(	MST.getEdgesNumber() == terminals.size() - 1)
 				return MST;		
 		}
@@ -110,25 +110,22 @@ public class Controler {
 	
 	private Graph getMetricClosure(Graph graph) {
 		Graph full = new Graph(graph.getNodesNumber());
-		for (int i = 0; i < getTerminals().size(); i++) {
-			int source = getTerminals().get(i);
+		for (int i = 0; i < terminals.size(); i++) {
+			int source = terminals.get(i);
 			Dijkstra shortestPath = new Dijkstra(graph,
 					source);
 			// Wyswietla najkrotsze sciezki
-			// i je�li sa terminalami to dodaje do grafu
-			for (int j = i + 1; j < getTerminals().size(); j++) {
-				int target = getTerminals().get(j);
-				if (shortestPath.hasPathTo(target)) {
-					System.out.printf("get full %d do %d (%d)  ", source, target,
-							shortestPath.getDistanceTo(target));
-					full.addEdge(source, target, (int) shortestPath.getDistanceTo(target));
-					if (shortestPath.hasPathTo(target)) {
-						for (Edge edge : shortestPath.getPathTo(target)) {
-							System.out.print(edge);
-						}
-						System.out.println();
-					}
+			// i je�li sa terminalami to dodaje do grafu
+			for (int j = i + 1; j < terminals.size(); j++) {
+				int target = terminals.get(j);
+				
+				System.out.printf("get full %d do %d (%d)  ", source, target,
+						shortestPath.getDistanceTo(target));
+				full.addEdge(source, target, (int) shortestPath.getDistanceTo(target));
+				for (Edge edge : shortestPath.getPathTo(target)) {
+					System.out.print(edge);
 				}
+				System.out.println();
 			}
 		}
 		return full;
@@ -140,22 +137,21 @@ public class Controler {
 		int nodesNumber = 0;
 		
 		for (Edge e : tree.getEdges()) {
-			int source = e.v1;
-			int target = e.v2;
+			int source = e.getV1();
+			int target = e.getV2();
 			Dijkstra shortestPath = new Dijkstra(graph,	source);
 			
 			System.out.printf("get steiner %d do %d (%d)  ", source, target,
 			shortestPath.getDistanceTo(target));
 					
-			if (shortestPath.hasPathTo(target)) {
-				for (Edge edge : shortestPath.getPathTo(target)) {
-					System.out.print(edge);
-					steiner.addEdge(edge.getV1(), edge.getV2(), edge.getWeight());
-					visited[edge.getV1()] = true;
-					visited[edge.getV2()] = true;
-				}
-				System.out.println();
+			for (Edge edge : shortestPath.getPathTo(target)) {
+				System.out.print(edge);
+				steiner.addEdge(edge.getV1(), edge.getV2(), edge.getWeight());
+				visited[edge.getV1()] = true;
+				visited[edge.getV2()] = true;
 			}
+			System.out.println();
+			
 		}
 		
 		for (boolean i: visited) {
@@ -165,9 +161,5 @@ public class Controler {
 		steiner.setNodesNumber(nodesNumber);
 		System.out.println("waga "+ steiner.getWeight());
 		return steiner;
-	}
-	
-	public List<Integer> getTerminals() {
-		return terminals;
 	}
 }
